@@ -1,0 +1,44 @@
+@page "/info"
+@using System.Collections.Generic
+
+<h3>Animals Info</h3>
+<button @onclick="PopulateArray">Populate Array</button>
+<input type="number" @bind="displayLimit" min="1" max="@info.Count" @oninput="(e) => HandleDisplayLimitChange(int.Parse(e.Value.ToString()))" />
+
+
+
+@if (info.Count > 0)
+{
+    <h4>Types:</h4>
+    <ul>
+        @foreach (var i in info.Take(displayLimit))
+        {
+            <li>@i</li>
+        }
+    </ul>
+}
+
+
+@code {
+    private List<string> info = new List<string>();
+    private int displayLimit = 5;
+
+    private void HandleDisplayLimitChange(int newValue)
+    {
+        if (newValue >= 1 && newValue <=5)
+        {
+            displayLimit = newValue;
+        }
+    }
+    private void PopulateArray()
+    {
+        info.Clear(); 
+        
+        info.Add("Mammals(Dogs,Cats)");
+        info.Add("Birds(Owl,Duck)");
+        info.Add("Amphibians(Frogs,Hyla)");
+        info.Add("Reptiles(Crocodiles, Lizards)");
+        info.Add("Fish(Salmon,Catfish)");
+        
+    }
+}

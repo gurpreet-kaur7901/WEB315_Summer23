@@ -1,0 +1,12 @@
+@page "/"
+@using System
+
+<h1>Welcome to my website that is @themeName</h1>
+<h2>Created by: @yourName</h2>
+<p>Current Date and Time: @currentDateTime.ToString()</p>
+
+@code {
+    private string themeName = "Animal";
+    private string yourName = "Gurpreet Kaur";
+    private DateTime currentDateTime = DateTime.Now;
+}

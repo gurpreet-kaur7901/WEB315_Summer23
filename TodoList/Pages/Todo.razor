@@ -1,0 +1,109 @@
+﻿@page "/todo"
+
+
+<link href="css/styles.css" rel="stylesheet"/>
+
+
+<h3>Todo : (@todos.Count(todo => !todo.IsDone))</h3>
+
+<div>
+    <input placeholder="todo" @bind="todo" />
+    <input placeholder="description" @bind="description" />
+    <input type="date" @bind="todoDueDate" />
+    <button class="button" @onclick="addNewTodo">Add todo</button>
+</div>
+
+
+<div>
+    <label>Filter: </label>
+    <select @bind="filter">
+        <option value="all">All Todos</option>
+        <option value="completed">Completed Todos</option>
+        <option value="incomplete">Incomplete Todos</option>
+    </select>
+</div>
+
+<ul>
+    @foreach (var todo in filteredTodos)
+    {
+        <li>
+            <input type="checkbox" @bind="todo.IsDone" />
+            @todo.Title - (@todo.Description) - Due Date: @todo.todoDueDate.ToShortDateString()
+            <button class="delbutton" @onclick="()=> Delete(todo)">Delete</button>
+        </li>
+    }
+</ul>
+
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <p>@errorMessage</p>
+}
+
+
+@code {
+    private List<TodoItem> todos = new();
+    private string todo;
+    private string description;
+    private DateTime todoDueDate = DateTime.Today;
+    private string filter = "all";
+    private string errorMessage;
+
+    
+    private IEnumerable<TodoItem> filteredTodos => filter switch
+    {
+        "completed" => todos.Where(t => t.IsDone),
+        "incomplete" => todos.Where(t => !t.IsDone),
+        _ => todos,
+    };
+
+
+    private void addNewTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(todo))
+        {
+            try
+            {
+                todos.Add(new TodoItem
+                {
+                    Title = todo,
+                    Description = description,
+                    todoDueDate = todoDueDate
+                });
+
+                @* CLEAR INPUT *@
+                todo = string.Empty;
+                description = string.Empty;
+                errorMessage = string.Empty;
+            }
+            catch(Exception ex)
+            {
+                errorMessage =  ex.Message;
+            }
+        }
+        else
+        {
+            errorMessage = "enter a todo.";
+        }
+    }
+
+   
+    public class TodoItem
+    {
+        public string Title { get; set; }
+        public bool IsDone { get; set; }
+        public string Description { get; set; }
+        public DateTime todoDueDate { get; set; }
+    }
+
+
+    private void Delete(TodoItem task)
+    {
+        todos.Remove(task);
+    }
+
+    private void filterTodo()
+    {
+        
+    }
+}

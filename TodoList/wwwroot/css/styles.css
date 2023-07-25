@@ -1,0 +1,26 @@
+.button {
+    padding: 5px 10px;
+    background-color: #0b0fee;
+    color: #fff;
+
+}
+
+.delbutton {
+    padding: 5px 10px;
+    background-color: #ff0404;
+    color: #fff;
+
+}
+
+
+
+li {
+    margin-bottom: 15px;
+    margin-left: 20px;
+}
+
+
+.error {
+    color: red;
+    margin-top: 5px;
+}
